@@ -1,0 +1,13 @@
+# linspace math function
+import math
+import matplotlib.pyplot as plt
+
+num = (10,1)
+def linspace(num):
+    increase = 5
+    if num[0] < num[1]:
+        x = [i/increase for i in range(increase*num[0], increase*num[1])]
+    else:
+        x = [i/increase for i in range(increase*num[0], increase*num[1], -1)]
+    return x
+linspace(num)
