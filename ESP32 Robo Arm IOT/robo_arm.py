@@ -1,11 +1,9 @@
 import math
 
 # point: Place  of the object
-# 'point_to_anlge' is a function which convets the point value into angles a1 and a2
+# 'point_to_angles2D' is a function which convets the point value into angles a1 and a2
 # length: Length if the each arm, Total Arm Length = 2 * length
-
-
-def point_to_anlge(point=(0, 1), length=1) -> tuple:
+def point_to_angles2D(point=(0, 1), length=1) -> tuple:
     dis = math.sqrt(point[0] ** 2 + point[1] ** 2)
     if dis < length * 2:
         a1 = math.acos(point[0] / dis) + math.acos(dis / (2 * length))
@@ -19,8 +17,6 @@ def point_to_anlge(point=(0, 1), length=1) -> tuple:
 # 'degrees_to_duty' function converts our given degree into duty, then servo rotates at given angle.
 # min_duty and max_duty may vary for different servo.
 # You can change min_degrees and max_degrees as your wish.
-
-
 class degreesToDuty:
     def __init__(self, min_duty=2500, max_duty=8050, min_degrees=0, max_degrees=180):
         self.min_duty = min_duty
@@ -49,12 +45,36 @@ class degreesToDuty:
         return duty
 
 
+# point: Place  of the object
+# 'point_to_angles3D' is a function which convets the point value into angles a0, a1 and a2
+# length: Length if the each arm, Total Arm Length = 2 * length
+def point_to_angles3D(point=(90, 150, 60), l=1):  # 3D point, length -> 3 angles
+    d1 = math.sqrt(point[0] ** 2 + point[1] ** 2)
+    d2 = math.sqrt(point[0] ** 2 + point[1] ** 2 + point[2] ** 2)
+    if d2 < 2 * l:
+        a0 = math.acos(point[0] / d1)
+        a1 = math.acos(d1 / d2) + math.acos(d2 / (2 * l))
+        a2 = math.pi - 2 * math.acos(d2 / (2 * l))
+
+        return (a0 * (180 / math.pi), a1 * (180 / math.pi), a2 * (180 / math.pi))
+    else:
+        print("********** Out Of Range ***********")
+
+        return (90, 150, 60)  # Default Position
+
+
+# main Function
 def main():
-    Angle1, Angle2 = point_to_anlge((1, 1), 1)
+    Angle1, Angle2 = point_to_angles2D((1, 1), 1)
     print(f"Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}")
 
-    Angle3, Angle4 = point_to_anlge((2, 2), 1)
-    print(f"Angle3 is {int(Angle3)} and Angle4 is {int(Angle4)}")
+    Angle1, Angle2 = point_to_angles2D((2, 2), 1)
+    print(f"Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}")
+
+    Angle0, Angle1, Angle2 = point_to_angles3D((1, 1, 1), 1)
+    print(
+        f"Angle0 is {int(Angle0)}, Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}"
+    )
 
 
 if __name__ == "__main__":
