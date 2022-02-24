@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import math
 import numpy as np
+import random
 
 fig = plt.figure()
 ax = plt.axes(projection="3d")
@@ -54,7 +55,24 @@ def point_to_graph3D(x1, y1, z1):
     x = [0, mpoint[0], point[0]]
     y = [0, mpoint[1], point[1]]
     z = [0, mpoint[2], point[2]]
-    ax.plot3D(x, y, z, "-o", c="green")
+    ax.plot3D(x, y, z, "-o")
+
+
+def randompoint_genarator(From=1.5, To=2):
+    while True:
+        x = round(random.uniform(-2, 2), 2)
+        y = round(random.uniform(0, 2), 2)
+        z = round(random.uniform(0, 2), 2)
+        d = math.sqrt(x**2 + y**2 + z**2)
+        if From < d < To:
+            break
+    return (x, y, z)
+
+
+def multiple_arms(n):
+    for i in range(n):
+        x1, y1, z1 = randompoint_genarator()
+        point_to_graph3D(x1, y1, z1)
 
 
 # point = (1, 1, 1)
@@ -76,6 +94,5 @@ ax.plot3D([-2, 2], [0, 0], [0, 0], "--", c="black")
 ax.plot3D([0, 0], [-2, 2], [0, 0], "--", c="black")
 ax.plot3D([0, 0], [0, 0], [-2, 2], "--", c="black")
 
-point_to_graph3D(0, 0, 1)
-
+multiple_arms(10)
 plt.show()
