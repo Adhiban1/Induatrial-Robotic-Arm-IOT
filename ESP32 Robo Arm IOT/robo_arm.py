@@ -49,7 +49,10 @@ class degreesToDuty:
 # 'point_to_angles3D' is a function which convets the point value into angles a0, a1 and a2
 # length: Length if the each arm, Total Arm Length = 2 * length
 def point_to_angles3D(point=(90, 150, 60), l=1):  # 3D point, length -> 3 angles
-    d1 = math.sqrt(point[0] ** 2 + point[1] ** 2)
+    if point[0] == 0 and point[1] == 0:
+        d1 = math.sqrt(0.01**2 + 0.01**2)
+    else:
+        d1 = math.sqrt(point[0] ** 2 + point[1] ** 2)
     d2 = math.sqrt(point[0] ** 2 + point[1] ** 2 + point[2] ** 2)
     if d2 < 2 * l:
         a0 = math.acos(point[0] / d1)
@@ -58,9 +61,9 @@ def point_to_angles3D(point=(90, 150, 60), l=1):  # 3D point, length -> 3 angles
 
         return (a0 * (180 / math.pi), a1 * (180 / math.pi), a2 * (180 / math.pi))
     else:
-        print("********** Out Of Range ***********")
+        print(f'"Out of Range" for point={point} and length={l}')
 
-        return (90, 150, 60)  # Default Position
+        return (None, None, None)  # Default Position
 
 
 # main Function
@@ -71,9 +74,11 @@ def main():
     Angle1, Angle2 = point_to_angles2D((2, 2), 1)
     print(f"Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}")
 
-    Angle0, Angle1, Angle2 = point_to_angles3D((1, 1, 1), 1)
+    Angle0, Angle1, Angle2 = point_to_angles3D((0, 0, 1.99), 1)
     print(
-        f"Angle0 is {int(Angle0)}, Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}"
+        "Angle0 is {:5.2f}, Angle1 is {:5.2f} and Angle2 is {:5.2f}".format(
+            Angle0, Angle1, Angle2
+        )
     )
 
 
