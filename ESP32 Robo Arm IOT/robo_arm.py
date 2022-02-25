@@ -1,4 +1,6 @@
 import math
+import time
+import threading
 
 # point: Place  of the object
 # 'point_to_angles2D' is a function which convets the point value into angles a1 and a2
@@ -64,6 +66,42 @@ def point_to_angles3D(point=(90, 150, 60), l=1):  # 3D point, length -> 3 angles
         print(f'"Out of Range" for point={point} and length={l}')
 
         return (None, None, None)  # Default Position
+
+
+def lock_object():
+    global change
+    global a5
+    a5 = "45 lock the object"
+    change = False
+
+    def lock():
+        global a5
+        if a5 == "45 lock the object":
+            a5 = "180 release the object"
+        elif a5 == "180 release the object":
+            a5 = "45 lock the object"
+
+    def angle():
+        global change
+        while True:
+            if change == True:
+                lock()
+                change = False
+
+    def thread1():
+        global change
+        while True:
+            inp = input("Change (c/n): ")
+            if inp.lower() == "c":
+                change = True
+                time.sleep(0.001)
+                print(a5 + "\n")
+            elif inp.lower() == "n":
+                print("No change", a5, "\n")
+
+    thread = threading.Thread(target=thread1)
+    thread.start()
+    angle()
 
 
 # main Function
