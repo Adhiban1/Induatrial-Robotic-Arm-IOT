@@ -7,7 +7,7 @@ fig = plt.figure()
 ax = plt.axes(projection="3d")
 
 
-def point_to_angles3D(point=(90, 150, 60), l=1):  # 3D point, length -> 3 angles
+def point_to_angles3D(point=(1, 1, 1), l=1):  # 3D point, length -> 3 angles
     if point[0] == 0 and point[1] == 0:
         d1 = math.sqrt(0.01**2 + 0.01**2)
     else:
@@ -94,5 +94,6 @@ ax.plot3D([-2, 2], [0, 0], [0, 0], "--", c="black")
 ax.plot3D([0, 0], [-2, 2], [0, 0], "--", c="black")
 ax.plot3D([0, 0], [0, 0], [-2, 2], "--", c="black")
 
-multiple_arms(10)
+# multiple_arms(10)
+point_to_graph3D(1, 1, 1)
 plt.show()
