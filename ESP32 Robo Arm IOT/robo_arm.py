@@ -1,6 +1,7 @@
 import math
 import time
 import threading
+import random
 
 # point: Place  of the object
 # 'point_to_angles2D' is a function which convets the point value into angles a1 and a2
@@ -50,7 +51,7 @@ class degreesToDuty:
 # point: Place  of the object
 # 'point_to_angles3D' is a function which convets the point value into angles a0, a1 and a2
 # length: Length if the each arm, Total Arm Length = 2 * length
-def point_to_angles3D(point=(90, 150, 60), l=1):  # 3D point, length -> 3 angles
+def point_to_angles3D(point=(1, 1, 1), l=1):  # 3D point, length -> 3 angles
     if point[0] == 0 and point[1] == 0:
         d1 = math.sqrt(0.01**2 + 0.01**2)
     else:
@@ -62,6 +63,7 @@ def point_to_angles3D(point=(90, 150, 60), l=1):  # 3D point, length -> 3 angles
         a2 = math.pi - 2 * math.acos(d2 / (2 * l))
 
         return (a0 * (180 / math.pi), a1 * (180 / math.pi), a2 * (180 / math.pi))
+        # output degree
     else:
         print(f'"Out of Range" for point={point} and length={l}')
 
@@ -74,7 +76,7 @@ def lock_object():
     a5 = "45 lock the object"
     change = False
 
-    def lock():
+    def lock_release():
         global a5
         if a5 == "45 lock the object":
             a5 = "180 release the object"
@@ -85,7 +87,7 @@ def lock_object():
         global change
         while True:
             if change == True:
-                lock()
+                lock_release()
                 change = False
 
     def thread1():
@@ -104,20 +106,41 @@ def lock_object():
     angle()
 
 
+# changing wrist angle up and down
+def wristUpDown(a1, a2):  # Input is Degree
+    return 360 - a1 - a2
+
+
+def randompoint_genarator(From=1.5, To=2):
+    while True:
+        x = round(random.uniform(-2, 2), 2)
+        y = round(random.uniform(0, 2), 2)
+        z = round(random.uniform(0, 2), 2)
+        d = math.sqrt(x**2 + y**2 + z**2)
+        if From < d < To:
+            break
+    return (x, y, z)
+
+
 # main Function
 def main():
-    Angle1, Angle2 = point_to_angles2D((1, 1), 1)
-    print(f"Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}")
+    # Angle1, Angle2 = point_to_angles2D((1, 1), 1)
+    # print(f"Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}")
 
-    Angle1, Angle2 = point_to_angles2D((2, 2), 1)
-    print(f"Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}")
+    # Angle1, Angle2 = point_to_angles2D((2, 2), 1)
+    # print(f"Angle1 is {int(Angle1)} and Angle2 is {int(Angle2)}")
 
-    Angle0, Angle1, Angle2 = point_to_angles3D((0, 0, 1.99), 1)
-    print(
-        "Angle0 is {:5.2f}, Angle1 is {:5.2f} and Angle2 is {:5.2f}".format(
-            Angle0, Angle1, Angle2
-        )
-    )
+    # Angle0, Angle1, Angle2 = point_to_angles3D((0, 0, 1.99), 1)
+    # print(
+    #     "Angle0 is {:5.2f}, Angle1 is {:5.2f} and Angle2 is {:5.2f}".format(
+    #         Angle0, Angle1, Angle2
+    #     )
+    # )
+
+    point = randompoint_genarator()
+    # point = (1, 1, 1)
+    a0, a1, a2 = point_to_angles3D(point)
+    print(a0, a1, a2, wristUpDown(a1, a2))
 
 
 if __name__ == "__main__":

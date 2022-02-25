@@ -1,3 +1,4 @@
+############################################################################
 # linspace math function
 import math
 import matplotlib.pyplot as plt
@@ -11,3 +12,14 @@ def linspace(num):
         x = [i/increase for i in range(increase*num[0], increase*num[1], -1)]
     return x
 linspace(num)
+#############################################################################
+
+
+#############################################################################
+a0 -> angle of basement servo
+a1 -> angle of sholder servo
+a2 -> angle of elbow servo
+a3 -> angle of wrist rotate servo
+a4 -> angle of wrist up and down servo
+a5 -> angle of finger servo
+#############################################################################
