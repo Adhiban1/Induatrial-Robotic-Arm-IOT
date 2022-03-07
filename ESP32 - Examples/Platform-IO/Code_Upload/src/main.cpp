@@ -24,7 +24,7 @@ void loop()
 	delay(delay1);
 	myservo1.write(180);
 	delay(delay1);
-	if (delay1 > 400)
+	if (delay1 > 500)
 	{
 		delay1 -= 100;
 	}
