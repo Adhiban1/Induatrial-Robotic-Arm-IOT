@@ -111,11 +111,13 @@ def wristUpDown(a1, a2):  # Input is Degree
     return 360 - a1 - a2
 
 
-def randompoint_genarator(From=1.5, To=2):
+def randompoint_genarator(
+    From=1.5, To=2, l=1
+):  # from this distance to that distance ["From" & "To"]
     while True:
-        x = round(random.uniform(-2, 2), 2)
-        y = round(random.uniform(0, 2), 2)
-        z = round(random.uniform(0, 2), 2)
+        x = round(random.uniform(-2 * l, 2 * l), 2)
+        y = round(random.uniform(0, 2 * l), 2)
+        z = round(random.uniform(0, 2 * l), 2)
         d = math.sqrt(x**2 + y**2 + z**2)
         if From < d < To:
             break
