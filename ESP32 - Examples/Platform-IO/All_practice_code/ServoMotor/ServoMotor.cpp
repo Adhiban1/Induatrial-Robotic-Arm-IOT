@@ -6,7 +6,7 @@ Servo myservo;
 
 void setup()
 {
-  myservo.attach(PIN_SERVO1);
+  myservo.attach(PIN_SERVO);
 }
 
 void loop()

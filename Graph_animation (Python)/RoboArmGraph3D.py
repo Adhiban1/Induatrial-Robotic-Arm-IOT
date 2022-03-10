@@ -94,6 +94,6 @@ ax.plot3D([-2, 2], [0, 0], [0, 0], "--", c="black")
 ax.plot3D([0, 0], [-2, 2], [0, 0], "--", c="black")
 ax.plot3D([0, 0], [0, 0], [-2, 2], "--", c="black")
 
-# multiple_arms(10)
-point_to_graph3D(1, 1, 1)
+multiple_arms(100)
+# point_to_graph3D(1, 1, 1)
 plt.show()
