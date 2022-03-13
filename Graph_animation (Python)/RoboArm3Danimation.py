@@ -5,6 +5,7 @@ import random
 
 ax = plt.axes(projection="3d")
 origin_point = (0, 0, 0)
+segments = 20
 
 
 def randompoint_genarator(From=0.5, To=1.9):
@@ -66,20 +67,19 @@ def arm(x1=1, y1=1, z1=1, l=1):
         [origin_point[2], elbow_point[2], target_point[2]],
     )
 
-    ax.set_xlim(-2, 2)
-    ax.set_ylim(-2, 2)
-    ax.set_zlim(-2, 2)
+    ax.set_xlim(-2 * l, 2 * l)
+    ax.set_ylim(-2 * l, 2 * l)
+    ax.set_zlim(-2 * l, 2 * l)
 
     ax.plot3D([-2, 2], [0, 0], [0, 0], "--", c="black")
     ax.plot3D([0, 0], [-2, 2], [0, 0], "--", c="black")
     ax.plot3D([0, 0], [0, 0], [-2, 2], "--", c="black")
-
     ax.plot3D(x, y, z, "-og")
 
 
 def move(p1, p2):
     if p2[0] - p1[0] != 0:
-        l = np.linspace(p1[0], p2[0], 20)
+        l = np.linspace(p1[0], p2[0], segments)
         m = (p2[1] - p1[1]) * (l - p1[0]) / (p2[0] - p1[0]) + p1[1]
         n = (p2[2] - p1[2]) * (l - p1[0]) / (p2[0] - p1[0]) + p1[2]
 
