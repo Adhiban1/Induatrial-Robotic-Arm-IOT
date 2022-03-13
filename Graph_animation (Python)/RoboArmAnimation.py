@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 
 fig, ax = plt.subplots()
 
@@ -54,21 +55,27 @@ def move(p1, p2):
         print("***********  Invalid  **********")
 
 
+def randompoint_genarator(From=0.1, To=2):
+    while True:
+        x = round(random.uniform(0, 2), 2)
+        y = round(random.uniform(0, 2), 2)
+
+        d = np.sqrt(x**2 + y**2)
+        if From < d < To:
+            break
+    return (x, y)
+
+
 def main(movepath):
     for i in movepath:
         move(i[0], i[1])
 
 
-points = [
-    (0.066, 1.909),
-    (0.285, 0.11),
-    (0.692, 1.779),
-    (0.896, 0.11),
-    (1.299, 1.448),
-    (1.471, 0.196),
-    (1.863, 0.571),
-    (0.066, 1.909),
-]
+points = []
+
+for _ in range(100):
+    points.append(randompoint_genarator())
+
 
 movepath = []
 
