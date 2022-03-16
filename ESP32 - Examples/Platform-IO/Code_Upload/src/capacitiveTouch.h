@@ -10,7 +10,7 @@ void loop()
 {
     int touch = touchRead(13);
     Serial.println(touch);
-    if (10 > touch)
+    if (25 > touch)
     {
         digitalWrite(2, HIGH);
     }
@@ -18,5 +18,5 @@ void loop()
     {
         digitalWrite(2, LOW);
     }
-    delay(15);
+    delay(100);
 }

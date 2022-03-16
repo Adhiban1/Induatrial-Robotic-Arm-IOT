@@ -41,6 +41,7 @@ void point_to_servoMove(double x = 1, double y = 1, double z = 1, double l = 1) 
 
     // the angles are given to the servo motors.
     myservo1.write(a1);
+    Serial.print("Servo Move at angle: ");
     Serial.println(a1);
 };
 
@@ -63,5 +64,7 @@ void loop()
     point_to_servoMove(1.46, 1.11, 0.52); // floating values are also applicable.
     delay(delay1);
     point_to_servoMove(1.46, 1.11, 0.52, 2); // here the 4th argument is length of the arm.
+    delay(delay1);
+    Serial.println("---------------");
     delay(delay1);
 }
