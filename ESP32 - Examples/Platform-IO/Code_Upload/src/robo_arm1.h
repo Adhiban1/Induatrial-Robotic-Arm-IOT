@@ -53,45 +53,53 @@ public:
 
     void point(double x1 = 1.0, double y1 = 1.0, double z1 = 1.0)
     {
-        // Formula ...................
-        d1 = sqrt(pow(x1, 2) + pow(y1, 2));
-        if (d1 == 0)
-        {
-            d1 = 0.0001;
-        }
-        a0 = acos(x1 / d1);
         d2 = sqrt(pow(x1, 2) + pow(y1, 2) + pow(z1, 2));
-        m = d2 / 2;
-        t1 = acos(m / arm_length);
-        if (d2 == 0)
+        if (d2 < arm_length * 2 && d2 > 0)
         {
-            d2 = 0.0001;
+            // Formula ...................
+            d1 = sqrt(pow(x1, 2) + pow(y1, 2));
+            if (d1 == 0)
+            {
+                d1 = 0.0001;
+            }
+            a0 = acos(x1 / d1);
+
+            m = d2 / 2;
+            t1 = acos(m / arm_length);
+            if (d2 == 0)
+            {
+                d2 = 0.0001;
+            }
+            t2 = acos(d1 / d2);
+            a1 = t1 + t2;
+            a2 = pi - 2 * t1;
+            a4 = ((3 * pi / 2) - a1 - a2);
+            // --------------------------
+
+            // Converting Radian to degree.
+            a0 = a0 * (180 / pi);
+            a1 = a1 * (180 / pi);
+            a2 = a2 * (180 / pi);
+            a4 = a4 * (180 / pi);
+            // ------------------------
+
+            // Angles are given to Servos.
+            Servo0.write(a0);
+            Servo1.write(a1);
+            Servo2.write(a2);
+            Servo4.write(a4);
+            // ------------------------
+            Serial.println("point angles:");
+            Serial.println(a0);
+            Serial.println(a1);
+            Serial.println(a2);
+            Serial.println(a4);
+            Serial.println("------------------------");
         }
-        t2 = acos(d1 / d2);
-        a1 = t1 + t2;
-        a2 = pi - 2 * t1;
-        a4 = ((3 * pi / 2) - a1 - a2);
-        // --------------------------
-
-        // Converting Radian to degree.
-        a0 = a0 * (180 / pi);
-        a1 = a1 * (180 / pi);
-        a2 = a2 * (180 / pi);
-        a4 = a4 * (180 / pi);
-        // ------------------------
-
-        // Angles are given to Servos.
-        Servo0.write(a0);
-        Servo1.write(a1);
-        Servo2.write(a2);
-        Servo4.write(a4);
-        // ------------------------
-        Serial.println("point angles:");
-        Serial.println(a0);
-        Serial.println(a1);
-        Serial.println(a2);
-        Serial.println(a4);
-        Serial.println("------------------------");
+        else
+        {
+            Serial.println("*****Invalid point*****");
+        }
     }
 };
 
@@ -101,7 +109,7 @@ void setup()
 {
     Serial.begin(9600);
     arm.attach();
-    arm.point(1.223, 0.784875, 0.532426);
+    arm.point(1, 1, 1);
 }
 
 void loop()
