@@ -4,7 +4,7 @@
 
 // Servos.
 Servo myservo1;
-#define PIN_SERVO1 13
+#define PIN_SERVO1 25
 
 // 'point_to_servoMove' changes the angles of servos when co-ordinate point is given.
 double pi = 3.14159265359;

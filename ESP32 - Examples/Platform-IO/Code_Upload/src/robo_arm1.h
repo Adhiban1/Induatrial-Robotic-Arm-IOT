@@ -4,54 +4,58 @@
 
 Servo Servo0, Servo1, Servo2, Servo3, Servo4, Servo5;
 
+int s0_pin = 13, s1_pin = 12, s2_pin = 14, s3_pin = 27, s4_pin = 26, s5_pin = 25;
+double arm_length = 1;
+
 class Arm
 {
 public:
-    double arm_length;
-    int s1_pin, s2_pin, s3_pin, s4_pin, s5_pin, s6_pin;
-
-    Arm(int s1, int s2, int s3, int s4, int s5, int s6, double l = 1)
+    Arm(int s0 = 13, int s1 = 12, int s2 = 14, int s3 = 27, int s4 = 26, int s5 = 25, double l = 1)
     {
+        s0_pin = s0;
         s1_pin = s1;
         s2_pin = s2;
         s3_pin = s3;
         s4_pin = s4;
         s5_pin = s5;
-        s6_pin = s6;
-        Servo0.attach(s1_pin);
-        Servo1.attach(s1_pin);
-        Servo2.attach(s1_pin);
-        Servo3.attach(s1_pin);
-        Servo4.attach(s1_pin);
-        Servo5.attach(s1_pin);
-        Serial.begin(9600);
+        arm_length = l;
     }
 
-    void write(double a0, double a1, double a2, double a3, double a4, double a5)
+    void attach()
     {
-        Servo0.write(a0);
-        Servo1.write(a1);
-        Servo2.write(a2);
-        Servo3.write(a3);
-        Servo4.write(a4);
-        Servo5.write(a5);
-        Serial.println("Angles:");
-        Serial.println(a0);
-        Serial.println(a1);
-        Serial.println(a2);
-        Serial.println(a3);
-        Serial.println(a4);
-        Serial.println(a5);
-        Serial.println("---------------");
+        Servo0.attach(s0_pin);
+        Servo1.attach(s1_pin);
+        Servo2.attach(s2_pin);
+        Servo3.attach(s3_pin);
+        Servo4.attach(s4_pin);
+        Servo5.attach(s5_pin);
+    }
+
+    void same_angles(double angle)
+    {
+        Servo0.write(angle);
+        Servo1.write(angle);
+        Servo2.write(angle);
+        Servo3.write(angle);
+        Servo4.write(angle);
+        Servo5.write(angle);
     }
 };
 
+Arm arm;
+
 void setup()
 {
-    Arm arm(1, 2, 3, 4, 5, 6);
-    arm.write(45, 45, 45, 45, 45, 45);
+    Serial.begin(9600);
+    arm.attach();
 }
 
 void loop()
 {
+    arm.same_angles(80);
+    Serial.println("0");
+    delay(1000);
+    arm.same_angles(100);
+    Serial.println("180");
+    delay(1000);
 }
