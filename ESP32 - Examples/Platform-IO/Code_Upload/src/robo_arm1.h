@@ -126,7 +126,7 @@ public:
         Serial.println("Object locked");
     }
 
-    // it will spread the fingers of amr.
+    // it will spread the fingers of arm.
     void unlock()
     {
         Servo5.write(90);
@@ -139,8 +139,8 @@ Arm arm; // Creating arm Object.
 // set all the initializations in 'setup' function.
 void setup()
 {
-    Serial.begin(9600); // Begin the Serial Moniter.
-    arm.attach();       // Servos are attached to MicroController.
+    Serial.begin(9600); // Begin the Serial Monitor.
+    arm.attach();       // Servos are attached to Microcontroller.
     arm.point(1, 1, 1); // Arm moves at this point.
 }
 
