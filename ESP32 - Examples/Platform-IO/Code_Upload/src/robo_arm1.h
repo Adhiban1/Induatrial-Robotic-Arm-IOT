@@ -1,11 +1,12 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
-#include <math.h>
+#include <cmath>
 
 Servo Servo0, Servo1, Servo2, Servo3, Servo4, Servo5;
 
 int s0_pin = 13, s1_pin = 12, s2_pin = 14, s3_pin = 27, s4_pin = 26, s5_pin = 25;
 double arm_length = 1;
+double pi = 3.14159265359;
 
 class Arm
 {
@@ -29,6 +30,13 @@ public:
         Servo3.attach(s3_pin);
         Servo4.attach(s4_pin);
         Servo5.attach(s5_pin);
+
+        Servo0.write(90);
+        Servo1.write(150);
+        Servo2.write(60);
+        Servo3.write(0);
+        Servo4.write(60);
+        Servo5.write(45);
     }
 
     void same_angles(double angle)
@@ -40,6 +48,51 @@ public:
         Servo4.write(angle);
         Servo5.write(angle);
     }
+
+    double d1, a0, d2, m, t1, t2, a1, a2, a4; // Formula
+
+    void point(double x1 = 1.0, double y1 = 1.0, double z1 = 1.0)
+    {
+        // Formula ...................
+        d1 = sqrt(pow(x1, 2) + pow(y1, 2));
+        if (d1 == 0)
+        {
+            d1 = 0.0001;
+        }
+        a0 = acos(x1 / d1);
+        d2 = sqrt(pow(x1, 2) + pow(y1, 2) + pow(z1, 2));
+        m = d2 / 2;
+        t1 = acos(m / arm_length);
+        if (d2 == 0)
+        {
+            d2 = 0.0001;
+        }
+        t2 = acos(d1 / d2);
+        a1 = t1 + t2;
+        a2 = pi - 2 * t1;
+        a4 = ((3 * pi / 2) - a1 - a2);
+        // --------------------------
+
+        // Converting Radian to degree.
+        a0 = a0 * (180 / pi);
+        a1 = a1 * (180 / pi);
+        a2 = a2 * (180 / pi);
+        a4 = a4 * (180 / pi);
+        // ------------------------
+
+        // Angles are given to Servos.
+        Servo0.write(a0);
+        Servo1.write(a1);
+        Servo2.write(a2);
+        Servo4.write(a4);
+        // ------------------------
+        Serial.println("point angles:");
+        Serial.println(a0);
+        Serial.println(a1);
+        Serial.println(a2);
+        Serial.println(a4);
+        Serial.println("------------------------");
+    }
 };
 
 Arm arm;
@@ -48,14 +101,9 @@ void setup()
 {
     Serial.begin(9600);
     arm.attach();
+    arm.point(1.223, 0.784875, 0.532426);
 }
 
 void loop()
 {
-    arm.same_angles(80);
-    Serial.println("0");
-    delay(1000);
-    arm.same_angles(100);
-    Serial.println("180");
-    delay(1000);
 }

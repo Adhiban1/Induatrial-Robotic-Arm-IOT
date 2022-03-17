@@ -42,7 +42,10 @@ void point_to_servoMove(double x = 1, double y = 1, double z = 1, double l = 1) 
     // the angles are given to the servo motors.
     myservo1.write(a1);
     Serial.print("Servo Move at angle: ");
+    Serial.println(a0);
     Serial.println(a1);
+    Serial.println(a2);
+    Serial.println(a4);
 };
 
 // Setup function.
