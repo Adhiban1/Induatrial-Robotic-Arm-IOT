@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
+// This will rotating the servo at 180 when touching. and return to normal to 0.
+
 Servo servo;
 
 void setup()
