@@ -10,6 +10,7 @@ int s0_pin = 13, s1_pin = 12, s2_pin = 14, s3_pin = 27, s4_pin = 26, s5_pin = 25
 double arm_length = 1; // Length of Arm.
 
 double pi = 3.14159265359;
+int LED = 2;
 
 // Arm Class.
 class Arm
@@ -36,6 +37,7 @@ public:
         Servo3.attach(s3_pin);
         Servo4.attach(s4_pin);
         Servo5.attach(s5_pin);
+        pinMode(LED, OUTPUT);
 
         // Arm default position.
         Servo0.write(90);
@@ -109,6 +111,9 @@ public:
         {
             Serial.println("*****Invalid point*****");
         }
+        digitalWrite(LED, HIGH);
+        delay(200);
+        digitalWrite(LED, LOW);
     }
 
     // it will rotate wrist.
@@ -132,6 +137,32 @@ public:
         Servo5.write(90);
         Serial.println("Object unlocked");
     }
+
+    double x, y, z, d;
+
+    void rand_point() // Creates random valid point and that point given to the servos.
+    {
+        while (true)
+        {
+            x = random(-2000, 2000) / 1000.0;
+            y = random(0, 2000) / 1000.0;
+            z = random(0, 2000) / 1000.0;
+            d = sqrt(sq(x) + sq(y) + sq(z));
+            if (d < 2 && x != 0 && y > 0 && z > 0)
+                break;
+        }
+
+        Serial.println("Random point:");
+        Serial.print("x: ");
+        Serial.print(x);
+        Serial.print(", y: ");
+        Serial.print(y);
+        Serial.print(", z: ");
+        Serial.println(z);
+        Serial.println(" ");
+
+        point(x, y, z);
+    }
 };
 
 Arm arm; // Creating arm Object.
@@ -141,10 +172,11 @@ void setup()
 {
     Serial.begin(9600); // Begin the Serial Monitor.
     arm.attach();       // Servos are attached to Microcontroller.
-    arm.point(1, 1, 1); // Arm moves at this point.
 }
 
 // This will do repeating process.
 void loop()
 {
+    arm.rand_point(); // Arm moves at random point.
+    delay(1000);
 }
