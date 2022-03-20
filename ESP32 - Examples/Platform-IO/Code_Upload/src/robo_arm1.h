@@ -62,7 +62,7 @@ public:
     double d1, a0, d2, m, t1, t2, a1, a2, a4; // Formula
 
     // point to Servo move.
-    void point(double x1 = 1.0, double y1 = 1.0, double z1 = 1.0)
+    void point(double x1 = 1.0, double y1 = 1.0, double z1 = 1.0, bool visible = true, bool LED_OK = true)
     {
         d2 = sqrt(pow(x1, 2) + pow(y1, 2) + pow(z1, 2));
         if (d2 < arm_length * 2 && d2 > 0)
@@ -100,20 +100,26 @@ public:
             Servo2.write(a2);
             Servo4.write(a4);
             // ------------------------
-            Serial.println("point angles:");
-            Serial.println(a0);
-            Serial.println(a1);
-            Serial.println(a2);
-            Serial.println(a4);
-            Serial.println("------------------------");
+            if (visible)
+            {
+                Serial.println("point angles:");
+                Serial.println(a0);
+                Serial.println(a1);
+                Serial.println(a2);
+                Serial.println(a4);
+                Serial.println("------------------------");
+            }
         }
         else
         {
             Serial.println("*****Invalid point*****");
         }
-        digitalWrite(LED, HIGH);
-        delay(100);
-        digitalWrite(LED, LOW);
+        if (LED_OK)
+        {
+            digitalWrite(LED, HIGH);
+            delay(100);
+            digitalWrite(LED, LOW);
+        }
     }
 
     // it will rotate wrist.
@@ -138,7 +144,7 @@ public:
         Serial.println("Object unlocked");
     }
 
-    double x, y, z, d;
+    double x = 1, y = 1, z = 1, d;
 
     void rand_point() // Creates random valid point and that point given to the servos.
     {
@@ -280,6 +286,73 @@ public:
         }
         move(x1, y1, z1, x2, y2, z2);
     }
+
+    int ser = -1;
+    double change = 0.01;
+    void keyboard_point()
+    {
+        ser = Serial.read();
+        Serial.print(x);
+        Serial.print(", ");
+        Serial.print(y);
+        Serial.print(", ");
+        Serial.println(z);
+        if (ser == 100) // D
+        {
+            x += change;
+
+            if ((sqrt(sq(x) + sq(y) + sq(z))) > 2)
+                x -= change;
+            if (x > 2)
+                x = 2;
+        }
+        else if (ser == 97) // A
+        {
+            x -= change;
+
+            if ((sqrt(sq(x) + sq(y) + sq(z))) > 2)
+                x += change;
+            if (x < -2)
+                x = -2;
+        }
+        else if (ser == 119) // W
+        {
+            y += change;
+
+            if ((sqrt(sq(x) + sq(y) + sq(z))) > 2)
+                y -= change;
+            if (y > 2)
+                y = 2;
+        }
+        else if (ser == 115) // S
+        {
+            y -= change;
+
+            if ((sqrt(sq(x) + sq(y) + sq(z))) > 2)
+                y += change;
+            if (y < 0)
+                y = 0;
+        }
+        else if (ser == 114) // R
+        {
+            z += change;
+
+            if ((sqrt(sq(x) + sq(y) + sq(z))) > 2)
+                z -= change;
+            if (z > 2)
+                z = 2;
+        }
+        else if (ser == 102) // F
+        {
+            z -= change;
+
+            if ((sqrt(sq(x) + sq(y) + sq(z))) > 2)
+                z += change;
+            if (z < 0)
+                z = 0;
+        }
+        point(x, y, z, false, false);
+    }
 };
 
 Arm arm; // Creating arm Object.
@@ -294,6 +367,5 @@ void setup()
 // This will do repeating process.
 void loop()
 {
-    arm.rand_move(); // Arm goes at random move.
-    delay(1000);
+    arm.keyboard_point();
 }
