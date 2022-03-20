@@ -265,8 +265,8 @@ public:
             x1 = random(-2000, 2000) / 1000.0;
             y1 = random(0, 2000) / 1000.0;
             z1 = random(0, 2000) / 1000.0;
-            d = sqrt(sq(x) + sq(y) + sq(z));
-            if (d < 2 && x != 0 && y > 0 && z > 0)
+            d = sqrt(sq(x1) + sq(y1) + sq(z1));
+            if (d < 2 && x1 != 0 && y1 > 0 && z1 > 0)
                 break;
         }
         while (true)
@@ -274,8 +274,8 @@ public:
             x2 = random(-2000, 2000) / 1000.0;
             y2 = random(0, 2000) / 1000.0;
             z2 = random(0, 2000) / 1000.0;
-            d = sqrt(sq(x) + sq(y) + sq(z));
-            if (d < 2 && x != 0 && y > 0 && z > 0)
+            d = sqrt(sq(x2) + sq(y2) + sq(z2));
+            if (d < 2 && x2 != 0 && y2 > 0 && z2 > 0)
                 break;
         }
         move(x1, y1, z1, x2, y2, z2);
