@@ -163,6 +163,123 @@ public:
 
         point(x, y, z);
     }
+
+    double n;
+    int div = 10;
+    double x_arr[11], y_arr[11], z_arr[11];
+    void move(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        if (x1 != x2)
+        {
+            Serial.print("Moving from (");
+            Serial.print(x1);
+            Serial.print(", ");
+            Serial.print(y1);
+            Serial.print(", ");
+            Serial.print(z1);
+            Serial.print(") to (");
+            Serial.print(x2);
+            Serial.print(", ");
+            Serial.print(y2);
+            Serial.print(", ");
+            Serial.print(z2);
+            Serial.println(")");
+
+            n = (x2 - x1) / div;
+            x_arr[0] = x1;
+            for (int i = 1; i < div + 1; i++)
+                x_arr[i] = x_arr[i - 1] + n;
+            for (int i = 0; i < div + 1; i++)
+                y_arr[i] = (y2 - y1) * (x_arr[i] - x1) / (x2 - x1) + y1;
+            for (int i = 0; i < div + 1; i++)
+                z_arr[i] = (z2 - z1) * (x_arr[i] - x1) / (x2 - x1) + z1;
+
+            for (int i = 0; i < div + 1; i++)
+                point(x_arr[i], y_arr[i], z_arr[i]);
+        }
+        else if (y1 != y2)
+        {
+            Serial.print("Moving from (");
+            Serial.print(x1);
+            Serial.print(", ");
+            Serial.print(y1);
+            Serial.print(", ");
+            Serial.print(z1);
+            Serial.print(") to (");
+            Serial.print(x2);
+            Serial.print(", ");
+            Serial.print(y2);
+            Serial.print(", ");
+            Serial.print(z2);
+            Serial.println(")");
+
+            n = (y2 - y1) / div;
+            y_arr[0] = y1;
+            for (int i = 1; i < div + 1; i++)
+                y_arr[i] = y_arr[i - 1] + n;
+            for (int i = 0; i < div + 1; i++)
+                x_arr[i] = (x2 - x1) * (y_arr[i] - y1) / (y2 - y1) + x1;
+            for (int i = 0; i < div + 1; i++)
+                z_arr[i] = (z2 - z1) * (y_arr[i] - y1) / (y2 - y1) + z1;
+
+            for (int i = 0; i < div + 1; i++)
+                point(x_arr[i], y_arr[i], z_arr[i]);
+        }
+        else if (z1 != z2)
+        {
+            Serial.print("Moving from (");
+            Serial.print(x1);
+            Serial.print(", ");
+            Serial.print(y1);
+            Serial.print(", ");
+            Serial.print(z1);
+            Serial.print(") to (");
+            Serial.print(x2);
+            Serial.print(", ");
+            Serial.print(y2);
+            Serial.print(", ");
+            Serial.print(z2);
+            Serial.println(")");
+
+            n = (z2 - z1) / div;
+            z_arr[0] = z1;
+            for (int i = 1; i < div + 1; i++)
+                z_arr[i] = z_arr[i - 1] + n;
+            for (int i = 0; i < div + 1; i++)
+                x_arr[i] = (x2 - x1) * (z_arr[i] - z1) / (z2 - z1) + x1;
+            for (int i = 0; i < div + 1; i++)
+                y_arr[i] = (y2 - y1) * (z_arr[i] - z1) / (z2 - z1) + y1;
+
+            for (int i = 0; i < div + 1; i++)
+                point(x_arr[i], y_arr[i], z_arr[i]);
+        }
+        else
+            Serial.println("Points must be difference...");
+    }
+
+    void rand_move()
+    {
+        double x1, y1, z1, x2, y2, z2, d;
+        while (true)
+        {
+            x1 = random(-2000, 2000) / 1000.0;
+            y1 = random(0, 2000) / 1000.0;
+            z1 = random(0, 2000) / 1000.0;
+            d = sqrt(sq(x) + sq(y) + sq(z));
+            if (d < 2 && x != 0 && y > 0 && z > 0)
+                break;
+        }
+        while (true)
+        {
+            x2 = random(-2000, 2000) / 1000.0;
+            y2 = random(0, 2000) / 1000.0;
+            z2 = random(0, 2000) / 1000.0;
+            d = sqrt(sq(x) + sq(y) + sq(z));
+            if (d < 2 && x != 0 && y > 0 && z > 0)
+                break;
+        }
+        move(x1, y1, z1, x2, y2, z2);
+    }
 };
 
 Arm arm; // Creating arm Object.
@@ -177,6 +294,6 @@ void setup()
 // This will do repeating process.
 void loop()
 {
-    arm.rand_point(); // Arm moves at random point.
+    arm.rand_move(); // Arm goes at random move.
     delay(1000);
 }
