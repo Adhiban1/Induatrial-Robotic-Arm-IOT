@@ -112,7 +112,7 @@ public:
             Serial.println("*****Invalid point*****");
         }
         digitalWrite(LED, HIGH);
-        delay(200);
+        delay(100);
         digitalWrite(LED, LOW);
     }
 
