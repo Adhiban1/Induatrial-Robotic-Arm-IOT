@@ -12,19 +12,21 @@ pygame.display.set_caption("Robotic Arm")
 clock = pygame.time.Clock()
 
 font = pygame.font.Font("freesansbold.ttf", 32)
-text = font.render("GeeksForGeeks", True, green, blue)
+
 
 # create a rectangular object for the
 # text surface object
-textRect = text.get_rect()
 
 # set the center of the rectangular object.
-textRect.center = (width // 2, height // 2)
+
 
 while True:
     clock.tick(60)
     display.fill((0, 0, 0))
-
+    text = font.render(f"{pygame.mouse.get_pos()}", True, (255, 255, 255), (0, 0, 0))
+    textRect = text.get_rect()
+    textRect.center = (width // 2 + 400, height // 2 - 280)
+    display.blit(text, textRect)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
