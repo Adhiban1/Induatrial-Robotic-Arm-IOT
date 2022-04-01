@@ -10,5 +10,6 @@
 // #include "sample.h"
 // #include "RoboArm3AxisKeyboard.h"
 // #include "led1.h"
-#include "python_serial1.h"
+// #include "python_serial1.h"
 // #include "python_serial2.h"
+#include "serial_read.h"

@@ -1,7 +1,7 @@
 import pygame
 import serial
 from math import *
-from time import time
+from time import time, sleep
 
 serialInst = serial.Serial()
 serialInst.baudrate = 9600
@@ -45,9 +45,17 @@ while True:
     if d < 2 * 100 * sqrt(2):
         t = acos(d / (2 * 100 * sqrt(2))) + acos((x1 - width / 2) / d)
 
+        # if time() - init_time > 2:
+        #     print(t * 180 / pi)
+        #     serialInst.write(str(t * 180 / pi).encode("utf-8"))
+        #     init_time = time()
         if time() - init_time > 2:
-            print(t * 180 / pi)
-            serialInst.write(str(t * 180 / pi).encode("utf-8"))
+            a = str(int(t * 180 / pi))
+            if 0 < len(a) <= 3:
+                a = f"{int(a):3.0f}".replace(" ", "0").replace("  ", "00")
+                print(a)
+                for i in a:
+                    serialInst.write(str(i).encode("utf-8"))
             init_time = time()
 
         pygame.draw.line(
