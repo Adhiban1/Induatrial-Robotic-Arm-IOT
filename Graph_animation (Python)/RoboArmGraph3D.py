@@ -18,7 +18,8 @@ def point_to_angles3D(point=(1, 1, 1), l=1):  # 3D point, length -> 3 angles
         a0 = math.acos(point[0] / d1)
         a1 = math.acos(d1 / d2) + math.acos(d2 / (2 * l))
         a2 = math.pi - 2 * math.acos(d2 / (2 * l))
-
+        print(a0, a1, a2)
+        print(a0 * 180 / np.pi, a1 * 180 / np.pi, a2 * 180 / np.pi)
         return (a0, a1, a2)
     else:
         print("********** Out Of Range ***********")
@@ -103,5 +104,5 @@ ax.plot3D([0, 0], [0, 0], [-2, 2], "--", c="black")
 #     m = float(input("Y-Axis: "))
 #     n = float(input("Z-Axis: "))
 #     point_to_graph3D(l, m, n)
-point_to_graph3D(1, 1, 1)
+point_to_graph3D(-1, 1, 1)
 plt.show()

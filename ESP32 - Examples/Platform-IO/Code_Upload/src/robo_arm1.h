@@ -353,6 +353,10 @@ public:
         }
         point(x, y, z, false, false);
     }
+
+    void automation()
+    {
+        }
 };
 
 Arm arm; // Creating arm Object.
