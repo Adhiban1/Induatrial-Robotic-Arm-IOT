@@ -7,7 +7,7 @@
 // #include "rand_servo_move.h"
 // #include "keyboard_input1.h"
 // #include "servo_keyboard.h"
-#include "sample.h"
+// #include "sample.h"
 // #include "RoboArm3AxisKeyboard.h"
 // #include "led1.h"
 // #include "python_serial1.h"
@@ -22,3 +22,4 @@
 // #include "servo_audio_control.h"
 // #include "robo_arm2.h"
 // #include "twoServo.h"
+#include "keypad1.h"
