@@ -1,18 +1,20 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-Servo downservo, upservo;
+Servo downservo, upservo, baseservo;
 
 void setup()
 {
     downservo.attach(13);
     upservo.attach(12);
+    baseservo.attach(14);
     Serial.begin(9600);
 }
-// const int a = 2000;
-int downservo_angle = 153, upservo_angle = 141;
-int downservoAngles[10], upservoAngles[10];
+
+int downservo_angle = 153, upservo_angle = 141, baseservo_angle = 0;
+int downservoAngles[100], upservoAngles[100], baseservoAngles[100];
 int c = -1;
+
 void loop()
 {
 
@@ -21,6 +23,8 @@ void loop()
         Serial.print(downservo_angle);
         Serial.print(", ");
         Serial.print(upservo_angle);
+        Serial.print(", ");
+        Serial.print(baseservo_angle);
         Serial.print(", ");
         Serial.print(c + 1);
         Serial.println(" positions recorded.");
@@ -33,11 +37,17 @@ void loop()
             upservo_angle--;
         if (b == 102) // f
             upservo_angle++;
+        if (b == 103) // g
+            baseservo_angle--;
+        if (b == 104) // h
+            baseservo_angle++;
         if (b == 122) // z
         {
             downservo.write(downservo_angle);
-            delay(100);
+            delay(200);
             upservo.write(upservo_angle);
+            delay(200);
+            baseservo.write(baseservo_angle);
             Serial.println("Arm Moved");
             delay(2000);
         }
@@ -46,6 +56,7 @@ void loop()
             c++;
             downservoAngles[c] = downservo_angle;
             upservoAngles[c] = upservo_angle;
+            baseservoAngles[c] = baseservo_angle;
             Serial.print("Recorded ");
             Serial.println(c + 1);
             delay(2000);
@@ -61,15 +72,17 @@ void loop()
                     for (int i = 0; i <= c; i++)
                     {
                         downservo.write(downservoAngles[i]);
-                        delay(100);
+                        delay(200);
                         upservo.write(upservoAngles[i]);
+                        delay(200);
+                        baseservo.write(baseservoAngles[i]);
                         delay(2000);
                     }
                 }
             }
             else
             {
-                Serial.println("No recored positions");
+                Serial.println("No recored positions, or only one position...");
             }
         }
         if (b == 113) // q
