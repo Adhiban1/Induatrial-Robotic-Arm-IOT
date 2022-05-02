@@ -1,20 +1,23 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-Servo servo;
+Servo downservo, upservo;
 
 void setup()
 {
-    servo.attach(13);
-    // Serial.begin(9600);
+    downservo.attach(13);
+    upservo.attach(12);
+    Serial.begin(9600);
 }
-
-int a = 3000;
-
+int a = 2000;
 void loop()
 {
-    servo.write(0);
+    downservo.write(150);
+    delay(50);
+    upservo.write(180 - 60);
     delay(a);
-    servo.write(180);
+    downservo.write(90);
+    delay(50);
+    upservo.write(180 - 180);
     delay(a);
 }
