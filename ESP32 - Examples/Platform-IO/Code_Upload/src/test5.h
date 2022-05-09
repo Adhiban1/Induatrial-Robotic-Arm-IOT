@@ -152,11 +152,11 @@ void control()
                 sholder.write(a1);
                 delay(200);
                 elbow.write(180 - a2);
-                delay(200);
+                delay(500);
                 wrist_r.write(rservo);
-                delay(200);
+                delay(500);
                 wrist_ud.write(uservo);
-                delay(200);
+                delay(500);
                 finger.write(fservo);
                 delay(1000);
             }
@@ -219,6 +219,12 @@ void control()
                     sholder.write(a1);
                     delay(200);
                     elbow.write(180 - a2);
+                    delay(500);
+                    wrist_r.write(rservoList[i]);
+                    delay(500);
+                    wrist_ud.write(uservoList[i]);
+                    delay(500);
+                    finger.write(fservoList[i]);
                     delay(2000);
                 }
                 Serial.print(k + 1);
