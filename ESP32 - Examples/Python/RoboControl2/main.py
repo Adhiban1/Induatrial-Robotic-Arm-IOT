@@ -15,19 +15,14 @@ engine.setProperty("rate", 150)
 voices = engine.getProperty("voices")
 engine.setProperty("voice", voices[1].id)
 
-instructions = f"""{Fore.RED}Controls:
-{Fore.YELLOW}
-* X-Axis: d(+) & a(-)
-* Y-Axis: w(+) & s(-)
-* Z-Axis: r(+) & f(-)
-* q - Record the position
-* e - Automation
-* z - Move
-* x - Default Position
-* c - Clear Data
-* esc - Close the App
-"""
-print(instructions)
+print(Fore.RED + "Controls:")
+
+with open("controls.txt", "r") as f:
+    content = f.read()
+print(Fore.YELLOW + content)
+content = content.split("\n")
+
+
 i = 0
 print(f"{Fore.GREEN}[Enter the password, you have only three Chances]")
 engine.say("Enter the password, you have only three Chances")
@@ -90,54 +85,54 @@ while True:
         # os.system("cls")
     except:
         pass
-    if keyboard.is_pressed("esc"):
+    if keyboard.is_pressed(content[11][content[11].find(":") + 2 :]):
         print(f"{Fore.RED}[App is going to close]")
         engine.say("App is going to close")
         engine.runAndWait()
         sys.exit()
-    if keyboard.is_pressed("a"):
+    if keyboard.is_pressed(content[1][content[1].find(":") + 2 :]):
         send("a")
         sleep(0.2)
-    if keyboard.is_pressed("s"):
+    if keyboard.is_pressed(content[3][content[3].find(":") + 2 :]):
         send("s")
         sleep(0.2)
-    if keyboard.is_pressed("d"):
+    if keyboard.is_pressed(content[0][content[0].find(":") + 2 :]):
         send("d")
         sleep(0.2)
-    if keyboard.is_pressed("f"):
+    if keyboard.is_pressed(content[5][content[5].find(":") + 2 :]):
         send("f")
         sleep(0.2)
-    if keyboard.is_pressed("w"):
+    if keyboard.is_pressed(content[2][content[2].find(":") + 2 :]):
         send("w")
         sleep(0.2)
-    if keyboard.is_pressed("r"):
+    if keyboard.is_pressed(content[4][content[4].find(":") + 2 :]):
         send("r")
         sleep(0.2)
-    if keyboard.is_pressed("e"):
+    if keyboard.is_pressed(content[7][content[7].find(":") + 2 :]):
         send("e")
         print(Fore.GREEN + "Automation...")
         engine.say("Automation")
         engine.runAndWait()
         # sleep(1)
-    if keyboard.is_pressed("z"):
+    if keyboard.is_pressed(content[8][content[8].find(":") + 2 :]):
         send("z")
         print(Fore.GREEN + "Arm Moving...")
         engine.say("Arm Moving")
         engine.runAndWait()
         # sleep(1)
-    if keyboard.is_pressed("c"):
+    if keyboard.is_pressed(content[10][content[10].find(":") + 2 :]):
         send("c")
         print(Fore.GREEN + "Clear Data...")
         engine.say("Clear Data")
         engine.runAndWait()
         # sleep(1)
-    if keyboard.is_pressed("x"):
+    if keyboard.is_pressed(content[9][content[9].find(":") + 2 :]):
         send("x")
         print(Fore.GREEN + "Default position...")
         engine.say("Default position")
         engine.runAndWait()
         # sleep(1)
-    if keyboard.is_pressed("q"):
+    if keyboard.is_pressed(content[6][content[6].find(":") + 2 :]):
         send("q")
         print(Fore.GREEN + "Recorded...")
         engine.say("Recorded")

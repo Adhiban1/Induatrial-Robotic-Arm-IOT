@@ -1,0 +1,12 @@
+X-Axis increase: q
+X-Axis decrease: a
+Y-Axis increase: w
+Y-Axis decrease: s
+Z-Axis increase: e
+Z-Axis decrease: d
+Record the position: r
+Automation: z
+Move: x
+Default Position: f
+Clear Data: c
+Close the App: esc
