@@ -17,8 +17,8 @@ void setup()
     Serial.begin(9600);
 }
 
-float x0 = 0, y2 = 0, z0 = 12, d1, a0, d2, m, l = 12, t1, t2, a1, a2, change = 1, rservo = 0, uservo = 90, fservo = 90;
-float x_list[100], y_list[100], z_list[100];
+float x0 = 0, y2 = 0, z0 = 12, d1, a0, d2, m, l = 12, t1, t2, a1, a2, change = 1, rservo = 90, uservo = 90, fservo = 150;
+float x_list[100], y_list[100], z_list[100], rservoList[100], uservoList[100], fservoList[100];
 int c = -1, msg;
 
 void positions()
@@ -31,6 +31,15 @@ void positions()
     Serial.print(", ");
     Serial.print("z:");
     Serial.print(z0);
+    Serial.print(", ");
+    Serial.print("r:");
+    Serial.print(rservo);
+    Serial.print(", ");
+    Serial.print("u:");
+    Serial.print(uservo);
+    Serial.print(", ");
+    Serial.print("f:");
+    Serial.print(fservo);
     // Serial.print(", ");
     // Serial.print("a0:");
     // Serial.print(a0);
@@ -126,6 +135,9 @@ void control()
             x_list[c] = x0;
             y_list[c] = y2;
             z_list[c] = z0;
+            rservoList[c] = rservo;
+            uservoList[c] = uservo;
+            fservoList[c] = fservo;
             Serial.print(c + 1);
             Serial.println(" Recorded...");
             delay(1000);
@@ -140,6 +152,12 @@ void control()
                 sholder.write(a1);
                 delay(200);
                 elbow.write(180 - a2);
+                delay(200);
+                wrist_r.write(rservo);
+                delay(200);
+                wrist_ud.write(uservo);
+                delay(200);
+                finger.write(fservo);
                 delay(1000);
             }
             else
@@ -151,32 +169,38 @@ void control()
         if (msg == 116) // t
         {
             rservo++;
-            wrist_r.write(rservo);
+            if (rservo > 180)
+                rservo = 180;
         }
         if (msg == 103) // g
         {
             rservo--;
-            wrist_r.write(rservo);
+            if (rservo < 0)
+                rservo = 0;
         }
         if (msg == 121) // y
         {
             uservo++;
-            wrist_ud.write(uservo);
+            if (uservo > 180)
+                uservo = 180;
         }
         if (msg == 104) // h
         {
             uservo--;
-            wrist_ud.write(uservo);
+            if (uservo < 0)
+                uservo = 0;
         }
         if (msg == 117) // u
         {
             fservo++;
-            finger.write(fservo);
+            if (fservo > 150)
+                fservo = 150;
         }
         if (msg == 106) // j
         {
             fservo--;
-            finger.write(fservo);
+            if (fservo < 90)
+                fservo = 90;
         }
         if (msg == 101) // e
         {
@@ -212,6 +236,9 @@ void control()
             x0 = 0;
             y2 = 0;
             z0 = 12;
+            fservo = 150;
+            rservo = 90;
+            uservo = 90;
         }
     }
 }
