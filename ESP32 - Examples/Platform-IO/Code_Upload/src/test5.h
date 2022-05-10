@@ -152,11 +152,11 @@ void control()
                 sholder.write(a1);
                 delay(200);
                 elbow.write(180 - a2);
-                delay(1000);
+                delay(200);
                 wrist_r.write(rservo);
-                delay(1000);
+                delay(200);
                 wrist_ud.write(uservo);
-                delay(1000);
+                delay(200);
                 finger.write(fservo);
                 delay(1000);
             }
@@ -219,11 +219,11 @@ void control()
                     sholder.write(a1);
                     delay(200);
                     elbow.write(180 - a2);
-                    delay(1000);
+                    delay(200);
                     wrist_r.write(rservoList[i]);
-                    delay(1000);
+                    delay(200);
                     wrist_ud.write(uservoList[i]);
-                    delay(1000);
+                    delay(200);
                     finger.write(fservoList[i]);
                     delay(2000);
                 }
@@ -243,7 +243,7 @@ void control()
             y2 = 0;
             z0 = 12;
             fservo = 150;
-            rservo = 90;
+            rservo = 0;
             uservo = 45;
         }
     }
