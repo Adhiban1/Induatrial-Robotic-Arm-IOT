@@ -12,12 +12,12 @@ void setup()
     sholder.attach(12);
     elbow.attach(14);
     wrist_r.attach(27);
-    wrist_ud.attach(26);
-    finger.attach(25);
+    wrist_ud.attach(33);
+    finger.attach(32);
     Serial.begin(9600);
 }
 
-float x0 = 0, y2 = 0, z0 = 12, d1, a0, d2, m, l = 12, t1, t2, a1, a2, change = 1, rservo = 90, uservo = 90, fservo = 150;
+float x0 = 0, y2 = 0, z0 = 12, d1, a0, d2, m, l = 12, t1, t2, a1, a2, change = 1, rservo = 0, uservo = 45, fservo = 150;
 float x_list[100], y_list[100], z_list[100], rservoList[100], uservoList[100], fservoList[100];
 int c = -1, msg;
 
@@ -152,11 +152,11 @@ void control()
                 sholder.write(a1);
                 delay(200);
                 elbow.write(180 - a2);
-                delay(500);
+                delay(1000);
                 wrist_r.write(rservo);
-                delay(500);
+                delay(1000);
                 wrist_ud.write(uservo);
-                delay(500);
+                delay(1000);
                 finger.write(fservo);
                 delay(1000);
             }
@@ -219,11 +219,11 @@ void control()
                     sholder.write(a1);
                     delay(200);
                     elbow.write(180 - a2);
-                    delay(500);
+                    delay(1000);
                     wrist_r.write(rservoList[i]);
-                    delay(500);
+                    delay(1000);
                     wrist_ud.write(uservoList[i]);
-                    delay(500);
+                    delay(1000);
                     finger.write(fservoList[i]);
                     delay(2000);
                 }
@@ -244,7 +244,7 @@ void control()
             z0 = 12;
             fservo = 150;
             rservo = 90;
-            uservo = 90;
+            uservo = 45;
         }
     }
 }
