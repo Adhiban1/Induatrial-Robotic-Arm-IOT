@@ -1,237 +1,284 @@
-from tkinter import *
-import serial
-from serial.tools import list_ports
-import sys
-import json
-import pyttsx3
+import socket
 from time import sleep
+from tkinter import *
+import json
 
-with open("controls.txt", "r") as f:
-    controls = json.loads(f.read())
+win = Tk()
+win.geometry("600x500")
+# win.resizable(False, False)
+win.title("Robotic Arm App")
+l1 = Label(text="", font=("TimesNewRoman", 12, "italic", "bold"))
+l1.pack()
 
-speech = bool(controls["speech"])
+with open("details.txt", "r") as f:
+    details = json.loads(f.read())
 
-if speech:
-    engine = pyttsx3.init()
-    engine.setProperty("rate", 150)
-    voices = engine.getProperty("voices")
-    engine.setProperty("voice", voices[1].id)
-
-    def say(a):
-        engine.say(a)
-        engine.runAndWait()
-
-else:
-
-    def say(a):
-        pass
-
-
-root = Tk()
-root.geometry("1000x500")
-root.title("Automated Robotic Arm")
-ports = serial.tools.list_ports.comports()
-serialInst = serial.Serial()
-
-portList = []
-portstr = ""
-for oneport in ports:
-    portList.append(str(oneport))
-    portstr += str(oneport) + "\n"
-
-if portstr == "":
-    portstr = "Ports not found"
-    say("Ports not found")
-l0 = Label(root, text=portstr, font=("TimesNewRoman", 20, "bold"))
-l0.pack()
-e1 = Entry(root, width=5, font=("TimesNewRoman", 20, "bold"))
-e1.pack(padx=5, pady=5)
-
-
-def comport():
-    if portstr == "Ports not found":
-        sys.exit()
-    else:
-        global val
-        val = e1.get()
-        for x in portList:
-            if x.startswith("COM" + str(val)):
-                portVar = "COM" + str(val)
-        serialInst.baudrate = 9600
-        serialInst.port = portVar
-        serialInst.open()
-        l0.configure(text="---Connected---\n", fg="#00FF00")
-        root.bind("<Key>", main)
-        say("Connected")
-        e1.forget()
-        b1.forget()
-
-
-if portstr == "Ports not found":
-    b1Name = "EXIT"
-else:
-    b1Name = "SUBMIT"
-
-b1 = Button(
-    text=b1Name,
-    command=comport,
-    bg="#0000FF",
-    fg="#FFFFFF",
-    font=("TimesNewRoman", 20, "bold"),
-)
-b1.pack(padx=5, pady=5)
-
-base = 0
-sholder = 135
-elbow = 135
-wristR = 0
-wristU = 45
-gripper = 150
+base = details["base"]
+sholder = details["sholder"]
+elbow = details["elbow"]
+wristR = details["wristR"]
+wristU = details["wristU"]
+gripper = details["gripper"]
 
 baseList = []
 sholderList = []
 elbowList = []
-wristR_List = []
-wristU_List = []
+wristRList = []
+wristUList = []
 gripperList = []
 
-l1 = Label(
-    text=f"\nBase: {base}, Sholder: {sholder}, Elbow: {elbow}\nWristR: {wristR}, WristU: {wristU}, Gripper: {gripper}",
-    font=("TimesNewRoman", 20, "bold"),
-)
-l1.pack(padx=5, pady=5)
-if portstr == "Ports not found":
-    l1.configure(text="")
+sock = socket.socket()
+host = details["IP"]  # ESP32 IP in local network
+port = details["port"]  # ESP32 Server Port
 
 
 def update():
-    l1.configure(
-        text=f"\nBase: {base}, Sholder: {sholder}, Elbow: {elbow}\nWristR: {wristR}, WristU: {wristU}, Gripper: {gripper}"
+    l2.configure(
+        text=f"Base: {base:3d}, Sholder: {sholder:3d}, Elbow: {elbow:3d}\nWristR: {wristR:3d}, WristU: {wristU:3d}, Gripper: {gripper:3d}"
     )
 
 
-def display(a):
-    l2.configure(text=a)
+def connect():
+    try:
+        sock.connect((host, port))
+        l1.configure(text="---CONNECTED---", fg="#00FF00")
+        update()
+    except TimeoutError:
+        l1.configure(text="TimeOutError", fg="#FF0000")
 
 
-def send(i):
-    serialInst.write(str(i).encode("utf-8"))
+b1 = Button(
+    text="Connect", command=connect, font=("TimesNewRoman", 12, "bold"), bg="#FFFF00"
+)
+b1.pack()
 
 
-def main(a):
-    global base, sholder, elbow, wristR, wristU, gripper, baseList, sholderList, elbowList, wristR_List, wristU_List, gripperList
-    k = a.char
-    if controls["base_i"] == k:
-        base += 1
-        if base > 180:
-            base = 180
-        display("")
-    elif controls["base_d"] == k:
-        base -= 1
-        if base < 0:
-            base = 0
-        display("")
-    elif controls["sholder_i"] == k:
-        sholder += 1
-        if sholder > 180:
-            sholder = 180
-        display("")
-    elif controls["sholder_d"] == k:
-        sholder -= 1
-        if sholder < 0:
-            sholder = 0
-        display("")
-    elif controls["elbow_i"] == k:
-        elbow += 1
-        if elbow > 135:
-            elbow = 135
-        display("")
-    elif controls["elbow_d"] == k:
-        elbow -= 1
-        if elbow < 0:
-            elbow = 0
-        display("")
-    elif controls["wristR_i"] == k:
-        wristR += 1
-        if wristR > 180:
-            wristR = 180
-        display("")
-    elif controls["wristR_d"] == k:
-        wristR -= 1
-        if wristR < 0:
-            wristR = 0
-        display("")
-    elif controls["wristU_i"] == k:
-        wristU += 1
-        if wristU > 180:
-            wristU = 180
-        display("")
-    elif controls["wristU_d"] == k:
-        wristU -= 1
-        if wristU < 0:
-            wristU = 0
-        display("")
-    elif controls["gripper_i"] == k:
-        gripper += 1
-        if gripper > 150:
-            gripper = 150
-        display("")
-    elif controls["gripper_d"] == k:
-        gripper -= 1
-        if gripper < 90:
-            gripper = 90
-        display("")
-    elif controls["default"] == k:
-        base = 0
-        sholder = 135
-        elbow = 135
-        wristR = 0
-        wristU = 45
-        gripper = 150
-        display("[DEFAULT]")
-        say("Default position")
-    elif controls["move"] == k:
-        display("[MOVE]")
-        send(f"{base:3d}{sholder:3d}{elbow:3d}{wristR:3d}{wristU:3d}{gripper:3d}")
-        say("Arm Moved")
-    elif controls["record"] == k:
-        baseList.append(base)
-        sholderList.append(sholder)
-        elbowList.append(elbow)
-        wristR_List.append(wristR)
-        wristU_List.append(wristU)
-        gripperList.append(gripper)
-        display(f"[RECORD][{len(baseList)}]")
-        say(f"Recorded: {len(baseList)}")
-    # elif controls["clear"] == k:
-    elif "\x08" == k:
-        display("[CLEAR]")
-        baseList = []
-        sholderList = []
-        elbowList = []
-        wristR_List = []
-        wristU_List = []
-        gripperList = []
-        say("Clear data")
-    # elif controls["Automate"] == k:
-    elif "\r" == k:
-        say("Automation")
-        no_of_automations = 3
-        display("AUTOMATE")
-        for _ in range(no_of_automations):
-            for a0, a1, a2, a3, a4, a5 in zip(
-                baseList, sholderList, elbowList, wristR_List, wristU_List, gripperList
-            ):
-                send(f"{a0:3d}{a1:3d}{a2:3d}{a3:3d}{a4:3d}{a5:3d}")
-                sleep(2.5)
-        display("Automation completed")
-        say("Automation completed")
-    elif "\x1b" == k:
-        sys.exit()
+def send():
+    sock.send(
+        f"{base:3d}{sholder:3d}{elbow:3d}{wristR:3d}{wristU:3d}{gripper:3d}".encode(
+            "utf-8"
+        )
+    )
 
+
+def basef(a):
+    global base
+    base = int(a)
     update()
 
 
-l2 = Label(root, text="", font=("TimesNewRoman", 10, "bold"), fg="#FF0000")
+def sholderf(a):
+    global sholder
+    sholder = int(a)
+    update()
+
+
+def elbowf(a):
+    global elbow
+    elbow = int(a)
+    update()
+
+
+def wristRf(a):
+    global wristR
+    wristR = int(a)
+    update()
+
+
+def wristUf(a):
+    global wristU
+    wristU = int(a)
+    update()
+
+
+def gripperf(a):
+    global gripper
+    gripper = int(a)
+    update()
+
+
+l2 = Label(
+    text=f"Base: {base:3d}, Sholder: {sholder:3d}, Elbow: {elbow:3d}\nWristR: {wristR:3d}, WristU: {wristU:3d}, Gripper: {gripper:3d}",
+    font=("TimesNewRoman", 20, "bold"),
+)
 l2.pack()
-root.mainloop()
+
+s1 = Scale(
+    from_=0,
+    to=180,
+    orient=HORIZONTAL,
+    length=300,
+    command=basef,
+    font=("TimesNewRoman", 12, "bold"),
+    fg="#00FF00",
+)
+s1.set(details["base"])
+s1.pack()
+s2 = Scale(
+    from_=0,
+    to=180,
+    orient=HORIZONTAL,
+    length=300,
+    command=sholderf,
+    font=("TimesNewRoman", 12, "bold"),
+    fg="#00FF00",
+)
+s2.set(details["sholder"])
+s2.pack()
+s3 = Scale(
+    from_=0,
+    to=135,
+    orient=HORIZONTAL,
+    length=300,
+    command=elbowf,
+    font=("TimesNewRoman", 12, "bold"),
+    fg="#00FF00",
+)
+s3.set(details["elbow"])
+s3.pack()
+s4 = Scale(
+    from_=0,
+    to=180,
+    orient=HORIZONTAL,
+    length=300,
+    command=wristRf,
+    font=("TimesNewRoman", 12, "bold"),
+    fg="#00FF00",
+)
+s4.set(details["wristR"])
+s4.pack()
+s5 = Scale(
+    from_=0,
+    to=180,
+    orient=HORIZONTAL,
+    length=300,
+    command=wristUf,
+    font=("TimesNewRoman", 12, "bold"),
+    fg="#00FF00",
+)
+s5.set(details["wristU"])
+s5.pack()
+s6 = Scale(
+    from_=90,
+    to=150,
+    orient=HORIZONTAL,
+    length=300,
+    command=gripperf,
+    font=("TimesNewRoman", 12, "bold"),
+    fg="#00FF00",
+)
+s6.set(details["gripper"])
+s6.pack()
+f2 = Frame(win)
+f2.pack()
+
+
+def display(a):
+    l3.configure(text=a)
+
+
+def move():
+    send()
+    display("MOVE")
+
+
+def record():
+    global baseList, sholderList, elbowList, wristRList, wristUList, gripperList, base, sholder, elbow, wristR, wristU, gripper
+    baseList.append(base)
+    sholderList.append(sholder)
+    elbowList.append(elbow)
+    wristRList.append(wristR)
+    wristUList.append(wristU)
+    gripperList.append(gripper)
+    display(f"RECORDED [ {len(baseList)} ]")
+
+
+def clear():
+    global baseList, sholderList, elbowList, wristRList, wristUList, gripperList
+    baseList = []
+    sholderList = []
+    elbowList = []
+    wristRList = []
+    wristUList = []
+    gripperList = []
+    display("CLEAR")
+
+
+def default():
+    global base, sholder, elbow, wristR, wristU, gripper
+    base = details["base"]
+    sholder = details["sholder"]
+    elbow = details["elbow"]
+    wristR = details["wristR"]
+    wristU = details["wristU"]
+    gripper = details["gripper"]
+    s1.set(details["base"])
+    s2.set(details["sholder"])
+    s3.set(details["elbow"])
+    s4.set(details["wristR"])
+    s5.set(details["wristU"])
+    s6.set(details["gripper"])
+    display("DEFAULT")
+
+
+def automate():
+    global baseList, sholderList, elbowList, wristRList, wristUList, gripperList
+    for _ in range(3):
+        for base, sholder, elbow, wristR, wristU, gripper in zip(
+            baseList, sholderList, elbowList, wristRList, wristUList, gripperList
+        ):
+            sock.send(
+                f"{base:3d}{sholder:3d}{elbow:3d}{wristR:3d}{wristU:3d}{gripper:3d}".encode(
+                    "utf-8"
+                )
+            )
+            sleep(2.5)
+    display("Automation process completed")
+
+
+Button(
+    f2,
+    text="RECORD",
+    command=record,
+    font=("TimesNewRoman", 12, "bold"),
+    bg="#0000FF",
+    fg="#FFFFFF",
+).pack(side=LEFT, padx=5, pady=5)
+Button(
+    f2,
+    text="CLEAR",
+    command=clear,
+    font=("TimesNewRoman", 12, "bold"),
+    bg="#0000FF",
+    fg="#FFFFFF",
+).pack(side=LEFT, padx=5, pady=5)
+Button(
+    f2,
+    text="AUTOMATE",
+    command=automate,
+    font=("TimesNewRoman", 12, "bold"),
+    bg="#0000FF",
+    fg="#FFFFFF",
+).pack(side=LEFT, padx=5, pady=5)
+Button(
+    f2,
+    text="DEFAULT",
+    command=default,
+    font=("TimesNewRoman", 12, "bold"),
+    fg="#FFFFFF",
+    bg="#0000FF",
+).pack(side=LEFT, padx=5, pady=5)
+Button(
+    f2,
+    text="MOVE",
+    command=move,
+    font=("TimesNewRoman", 12, "bold"),
+    bg="#0000FF",
+    fg="#FFFFFF",
+).pack(side=LEFT, padx=5, pady=5)
+
+f3 = Frame(win)
+f3.pack()
+l3 = Label(f3, text="", font=("TimesNewRoman", 12, "bold"), fg="#FF0000")
+l3.pack()
+win.mainloop()
