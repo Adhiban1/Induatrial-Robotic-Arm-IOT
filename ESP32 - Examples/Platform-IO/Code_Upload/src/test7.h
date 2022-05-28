@@ -4,12 +4,12 @@
 Servo base, sholder, elbow, wrist_r, wrist_ud, gripper;
 void setup()
 {
-    base.attach(15);
-    sholder.attach(4);
-    elbow.attach(5);
-    wrist_r.attach(18);
-    wrist_ud.attach(19);
-    gripper.attach(21);
+    base.attach(13);
+    sholder.attach(12);
+    elbow.attach(14);
+    wrist_r.attach(27);
+    wrist_ud.attach(26);
+    gripper.attach(25);
     Serial.begin(9600);
     pinMode(2, OUTPUT);
 }

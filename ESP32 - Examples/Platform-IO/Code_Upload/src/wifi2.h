@@ -64,7 +64,7 @@ void loop()
                 wrist_ud.write(wristUAngle);
                 delay(100);
                 gripper.write(gripperAngle);
-                delay(100);
+                delay(1000);
                 digitalWrite(2, LOW);
             }
             delay(10);

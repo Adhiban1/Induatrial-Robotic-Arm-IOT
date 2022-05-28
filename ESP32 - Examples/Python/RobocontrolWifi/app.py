@@ -104,8 +104,8 @@ l2 = Label(
 l2.pack()
 
 s1 = Scale(
-    from_=0,
-    to=180,
+    from_=details["s1From"],
+    to=details["s1To"],
     orient=HORIZONTAL,
     length=300,
     command=basef,
@@ -115,8 +115,8 @@ s1 = Scale(
 s1.set(details["base"])
 s1.pack()
 s2 = Scale(
-    from_=0,
-    to=180,
+    from_=details["s2From"],
+    to=details["s2To"],
     orient=HORIZONTAL,
     length=300,
     command=sholderf,
@@ -126,8 +126,8 @@ s2 = Scale(
 s2.set(details["sholder"])
 s2.pack()
 s3 = Scale(
-    from_=0,
-    to=135,
+    from_=details["s3From"],
+    to=details["s3To"],
     orient=HORIZONTAL,
     length=300,
     command=elbowf,
@@ -137,8 +137,8 @@ s3 = Scale(
 s3.set(details["elbow"])
 s3.pack()
 s4 = Scale(
-    from_=0,
-    to=180,
+    from_=details["s4From"],
+    to=details["s4To"],
     orient=HORIZONTAL,
     length=300,
     command=wristRf,
@@ -148,8 +148,8 @@ s4 = Scale(
 s4.set(details["wristR"])
 s4.pack()
 s5 = Scale(
-    from_=0,
-    to=180,
+    from_=details["s5From"],
+    to=details["s5To"],
     orient=HORIZONTAL,
     length=300,
     command=wristUf,
@@ -159,8 +159,8 @@ s5 = Scale(
 s5.set(details["wristU"])
 s5.pack()
 s6 = Scale(
-    from_=90,
-    to=150,
+    from_=details["s6From"],
+    to=details["s6To"],
     orient=HORIZONTAL,
     length=300,
     command=gripperf,
