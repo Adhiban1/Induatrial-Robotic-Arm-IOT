@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-Servo base, sholder, elbow, wrist_r, wrist_ud, gripper;
+Servo base, shoulder, elbow, wrist_r, wrist_ud, gripper;
 void setup()
 {
     base.attach(13);
-    sholder.attach(12);
+    shoulder.attach(12);
     elbow.attach(14);
     wrist_r.attach(27);
     wrist_ud.attach(26);
@@ -14,7 +14,7 @@ void setup()
     pinMode(2, OUTPUT);
 }
 
-int baseAngle = 0, sholderAngle = 135, elbowAngle = 135, wrist_rAngle = 0, wrist_udAngle = 45, gripperAngle = 150;
+int baseAngle = 0, shoulderAngle = 135, elbowAngle = 135, wrist_rAngle = 0, wrist_udAngle = 45, gripperAngle = 150;
 int baselist[100], sholderlist[100], elbowlist[100], wrist_rlist[100], wrist_udlist[100], gripperlist[100];
 int c = -1;
 
@@ -22,7 +22,7 @@ void display()
 {
     Serial.print(baseAngle);
     Serial.print(", ");
-    Serial.print(sholderAngle);
+    Serial.print(shoulderAngle);
     Serial.print(", ");
     Serial.print(elbowAngle);
     Serial.print(", ");
@@ -55,17 +55,17 @@ void controls()
     }
     if (b == 115) // s
     {
-        sholderAngle--;
-        if (sholderAngle < 0)
-            sholderAngle = 0;
-        sholder.write(sholderAngle);
+        shoulderAngle--;
+        if (shoulderAngle < 0)
+            shoulderAngle = 0;
+        shoulder.write(shoulderAngle);
     }
     if (b == 119) // w
     {
-        sholderAngle++;
-        if (sholderAngle > 180)
-            sholderAngle = 180;
-        sholder.write(sholderAngle);
+        shoulderAngle++;
+        if (shoulderAngle > 180)
+            shoulderAngle = 180;
+        shoulder.write(shoulderAngle);
     }
     if (b == 100) // d
     {
@@ -139,7 +139,7 @@ void controls()
         digitalWrite(2, HIGH);
         c++;
         baselist[c] = baseAngle;
-        sholderlist[c] = sholderAngle;
+        sholderlist[c] = shoulderAngle;
         elbowlist[c] = elbowAngle;
         wrist_rlist[c] = wrist_rAngle;
         wrist_udlist[c] = wrist_udAngle;
@@ -153,10 +153,10 @@ void controls()
     {
         digitalWrite(2, HIGH);
         Serial.println("Default Position...");
-        baseAngle = 0, sholderAngle = 135, elbowAngle = 135, wrist_rAngle = 0, wrist_udAngle = 45, gripperAngle = 150;
+        baseAngle = 0, shoulderAngle = 135, elbowAngle = 135, wrist_rAngle = 0, wrist_udAngle = 45, gripperAngle = 150;
         base.write(baseAngle);
         delay(100);
-        sholder.write(sholderAngle);
+        shoulder.write(shoulderAngle);
         delay(100);
         elbow.write(elbowAngle);
         delay(100);
@@ -181,7 +181,7 @@ void controls()
                 {
                     base.write(baseAngle);
                     delay(100);
-                    sholder.write(sholderAngle);
+                    shoulder.write(shoulderAngle);
                     delay(100);
                     elbow.write(elbowAngle);
                     delay(100);

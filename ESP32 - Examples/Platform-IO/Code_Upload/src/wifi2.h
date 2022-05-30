@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-Servo base, sholder, elbow, wrist_r, wrist_ud, gripper;
+Servo base, shoulder, elbow, wrist_r, wrist_ud, gripper;
 
 const char *ssid = "ESP32 Access Point";
 const char *password = "123456789";
@@ -11,7 +11,7 @@ WiFiServer server(80);
 void setup()
 {
     base.attach(13);
-    sholder.attach(12);
+    shoulder.attach(12);
     elbow.attach(14);
     wrist_r.attach(27);
     wrist_ud.attach(26);
@@ -30,7 +30,7 @@ void setup()
     server.begin();
 }
 
-int baseAngle, sholderAngle, elbowAngle, wristRAngle, wristUAngle, gripperAngle;
+int baseAngle, shoulderAngle, elbowAngle, wristRAngle, wristUAngle, gripperAngle;
 
 void loop()
 {
@@ -47,7 +47,7 @@ void loop()
 
                 String s = client.readString();
                 baseAngle = s.substring(0, 3).toInt();
-                sholderAngle = s.substring(3, 6).toInt();
+                shoulderAngle = s.substring(3, 6).toInt();
                 elbowAngle = s.substring(6, 9).toInt();
                 wristRAngle = s.substring(9, 12).toInt();
                 wristUAngle = s.substring(12, 15).toInt();
@@ -55,7 +55,7 @@ void loop()
                 digitalWrite(2, HIGH);
                 base.write(baseAngle);
                 delay(100);
-                sholder.write(sholderAngle);
+                shoulder.write(shoulderAngle);
                 delay(100);
                 elbow.write(elbowAngle);
                 delay(100);

@@ -8,6 +8,10 @@ import sys
 with open("details.txt", "r") as f:
     details = json.loads(f.read())
 
+with open("data.json", "r") as f:
+    data = json.loads(f.read())
+
+
 x = details["x"]
 y = details["y"]
 z = details["z"]
@@ -20,16 +24,30 @@ wristR = details["wristR"]
 wristU = details["wristU"]
 gripper = details["gripper"]
 
-baseList = []
-sholderList = []
-elbowList = []
-wristRList = []
-wristUList = []
-gripperList = []
+baseList = data["baseList"]
+sholderList = data["sholderList"]
+elbowList = data["elbowList"]
+wristRList = data["wristRList"]
+wristUList = data["wristUList"]
+gripperList = data["gripperList"]
 
 sock = socket.socket()
 host = details["IP"]  # ESP32 IP in local network
 port = details["port"]  # ESP32 Server Port
+
+
+def storeData():
+    global data, baseList, sholderList, elbowList, wristRList, wristUList, gripperList
+    data = {
+        "baseList": baseList,
+        "sholderList": sholderList,
+        "elbowList": elbowList,
+        "wristRList": wristRList,
+        "wristUList": wristUList,
+        "gripperList": gripperList,
+    }
+    with open("data.json", "w") as f:
+        f.write(json.dumps(data))
 
 
 correct_range = True
@@ -278,6 +296,7 @@ def record():
         gripperList.append(gripper)
         display(f"RECORDED [ {len(baseList)} ]")
         l3.configure(fg="#FF00FF")
+        storeData()
 
 
 def clear():
@@ -290,6 +309,7 @@ def clear():
     gripperList = []
     display("CLEAR")
     l3.configure(fg="#FF00FF")
+    storeData()
 
 
 def default():
