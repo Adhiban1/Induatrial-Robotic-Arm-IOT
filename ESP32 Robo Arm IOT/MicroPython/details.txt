@@ -1,8 +1,0 @@
-https://www.youtube.com/watch?v=WVZxK2MEbE4 , this link is about how to use Arduino using VS Code.
-
-blink.py - this will blink the built in LED in the Raspberry Pi Pico.
-servo.py - this will operate the servo motor.
-distance.py - this will detect water level in the tank. If water is high, the Red LED will glow. If it is medium, Yellow LED will glow. If water is low, green led will glow.
-Pico Youtube Tutorial - https://youtu.be/Zy64kZEM_bg
-
-Here Pico has no wifi, so now ESP32 is used in this project for IOT.

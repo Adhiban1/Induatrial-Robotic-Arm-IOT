@@ -1,3 +1,0 @@
-Running current: 350x3 + 270x3 = 1860mA.
-Stall Current: 1500x3 + 650x3 = 6450mA.
-So 6450mA is needed for Robotic arm.
