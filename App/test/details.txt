@@ -12,11 +12,11 @@
 "s2From": 0,
 "s2To": 180,
 "s3From": 0,
-"s3To": 120,
+"s3To": 110,
 "s4From": 0,
 "s4To": 180,
 "s5From": 0,
 "s5To": 180,
-"s6From": 90,
+"s6From": 80,
 "s6To": 150
 }
