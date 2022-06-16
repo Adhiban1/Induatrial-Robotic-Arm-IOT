@@ -8,6 +8,8 @@ const int echoPin = 14;
 #define SOUND_SPEED 0.034
 long duration;
 float distanceCm;
+float maxlevel;
+float minlevel;
 
 WiFiServer server(80);
 
@@ -50,6 +52,16 @@ void loop()
             {
                 client.print(String(distanceCm));
                 time = millis();
+            }
+            if (distanceCm > maxlevel)
+            {
+                digitalWrite(13, LOW);
+                digitalWrite(2, LOW);
+            }
+            else if (distanceCm < minlevel)
+            {
+                digitalWrite(13, HIGH);
+                digitalWrite(2, HIGH);
             }
         }
         client.stop();
