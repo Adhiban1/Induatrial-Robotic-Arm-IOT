@@ -28,7 +28,7 @@ void setup()
     Serial.println(IP);
     server.begin();
 }
-
+int inp = 0;
 void loop()
 {
     unsigned long time = millis();
@@ -38,6 +38,20 @@ void loop()
     {
         while (client.connected())
         {
+            if (client.available() > 0)
+            {
+                inp = Client.read();
+                if (inp == 97) // a
+                {
+                    digitalWrite(13, HIGH);
+                    digitalWrite(2, HIGH);
+                }
+                else if (inp == 98) // b
+                {
+                    digitalWrite(13, LOW);
+                    digitalWrite(2, LOW);
+                }
+            }
             digitalWrite(trigPin, LOW);
             delayMicroseconds(2);
             // Sets the trigPin on HIGH state for 10 micro seconds
@@ -48,7 +62,7 @@ void loop()
             duration = pulseIn(echoPin, HIGH);
             // Calculate the distance
             distanceCm = duration * SOUND_SPEED / 2;
-            if (millis() - time > 1000)
+            if (millis() - time > 100)
             {
                 client.print(String(distanceCm));
                 time = millis();
