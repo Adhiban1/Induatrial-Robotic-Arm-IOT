@@ -66,7 +66,7 @@ void loop()
             {
                 client.print(String(distanceCm));
                 Serial.println(distanceCm);
-                if (distanceCm < maxlevel)
+                if (distanceCm < maxlevel && distanceCm > 0)
                 {
                     digitalWrite(13, LOW);
                     digitalWrite(2, LOW);
