@@ -8,8 +8,8 @@ const int echoPin = 14;
 #define SOUND_SPEED 0.034
 long duration;
 float distanceCm;
-float maxlevel;
-float minlevel;
+float maxlevel = 10;
+float minlevel = 25;
 
 WiFiServer server(80);
 
@@ -40,7 +40,7 @@ void loop()
         {
             if (client.available() > 0)
             {
-                inp = Client.read();
+                inp = client.read();
                 if (inp == 97) // a
                 {
                     digitalWrite(13, HIGH);
@@ -62,20 +62,21 @@ void loop()
             duration = pulseIn(echoPin, HIGH);
             // Calculate the distance
             distanceCm = duration * SOUND_SPEED / 2;
-            if (millis() - time > 100)
+            if (millis() - time > 1000)
             {
                 client.print(String(distanceCm));
+                Serial.println(distanceCm);
+                if (distanceCm < maxlevel)
+                {
+                    digitalWrite(13, LOW);
+                    digitalWrite(2, LOW);
+                }
+                else if (distanceCm > minlevel)
+                {
+                    digitalWrite(13, HIGH);
+                    digitalWrite(2, HIGH);
+                }
                 time = millis();
-            }
-            if (distanceCm > maxlevel)
-            {
-                digitalWrite(13, LOW);
-                digitalWrite(2, LOW);
-            }
-            else if (distanceCm < minlevel)
-            {
-                digitalWrite(13, HIGH);
-                digitalWrite(2, HIGH);
             }
         }
         client.stop();
